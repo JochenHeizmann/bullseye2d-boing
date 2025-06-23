@@ -8,7 +8,7 @@ This is a port of the Boing game originally developed for the **Code the Classic
 
 **Original Game:** [Boing from Code the Classics](https://github.com/Wireframe-Magazine/Code-the-Classics/tree/master/boing-master)  
 **Book:** [Code the Classics Volume 1](https://magazine.raspberrypi.com/books/code-the-classics1)  
-**Original Author:** Eben Upton (eben@raspberrypi.org)  
+**Original Author:** Eben Upton
 **Original License:** BSD-2-Clause  
 
 ## Controls
@@ -29,21 +29,21 @@ This is a port of the Boing game originally developed for the **Code the Classic
 
 ### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd b2d_boing
-   ```
+**Clone the repository:**
+```bash
+git clone git@github.com:JochenHeizmann/bullseye2d-boing.git
+cd bullseye2d-boing
+```
 
-2. Install dependencies:
-   ```bash
-   dart pub get
-   ```
+**Install dependencies:**
+```bash
+dart pub get
+```
 
-3. Activate webdev (if not already installed):
-   ```bash
-   dart pub global activate webdev
-   ```
+**Activate webdev (if not already installed):**
+```bash
+dart pub global activate webdev
+```
 
 ### Running the Game
 

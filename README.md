@@ -55,7 +55,7 @@ Then open your browser to `http://localhost:8080`
 
 ## License
 
-This port maintains the same BSD-2-Clause license as the original:
+This port maintains the same BSD-2-Clause license as the original.
 
 ## Links
 

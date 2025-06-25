@@ -29,29 +29,41 @@ This is a port of the Boing game originally developed for the **Code the Classic
 
 ### Installation
 
-**Clone the repository:**
 ```bash
+# Clone the repository
 git clone git@github.com:JochenHeizmann/bullseye2d-boing.git
 cd bullseye2d-boing
-```
 
-**Install dependencies:**
-```bash
+# Install dependencies
 dart pub get
-```
 
-**Activate webdev (if not already installed):**
-```bash
+# Activate webdev (if not already installed)
 dart pub global activate webdev
-```
 
-### Running the Game
-
-#### Development Server
-```bash
+# Running the Game on development server
 webdev serve
 ```
+
 Then open your browser to `http://localhost:8080`
+
+## Tutorial
+
+I have included a tutorial presentation on how to create this game step by step. You can convert it to html using [Marp](https://marp.app/).
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (for npm)
+- [Marp CLI](https://github.com/marp-team/marp-cli)
+
+```bash
+# Installation
+npm install -g @marp-team/marp-cli
+
+# Build HTML presentation
+marp TUTORIAL.md -o TUTORIAL.html
+
+# Build PDF presentation
+marp TUTORIAL.md --pdf -o TUTORIAL.pdf
+```
 
 ## License
 

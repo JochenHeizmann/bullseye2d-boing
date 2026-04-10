@@ -8,8 +8,7 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  web: ^1.1.1
-  bullseye2d: ^1.0.9
+  bullseye2d: ^2.0.0
   vector_math: ^2.2.0
 
 dev_dependencies:

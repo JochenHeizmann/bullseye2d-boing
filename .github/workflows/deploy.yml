@@ -24,12 +24,20 @@ jobs:
         with:
           sdk: stable
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
       - run: dart pub get
 
       - run: dart run build_runner build --release --output build
 
       - name: Clean up symlinks
         run: rm -f build/web/packages
+
+      - name: Build tutorial
+        run: |
+          npx @marp-team/marp-cli TUTORIAL.md -o build/web/tutorial.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4

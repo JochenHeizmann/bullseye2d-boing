@@ -1,6 +1,6 @@
 # Boing - Bullseye2D Port
 
-[**Play**](https://jochenheizmann.github.io/bullseye2d-boing/)
+[**Play**](https://jochenheizmann.github.io/bullseye2d-boing/) | [**Tutorial**](https://jochenheizmann.github.io/bullseye2d-boing/tutorial.html)
 
 A Dart web port of the classic Pong game "Boing" from the **Code the Classics** collection, built using the Bullseye2D game library.
 

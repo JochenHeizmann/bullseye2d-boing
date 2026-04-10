@@ -74,8 +74,7 @@ Let's create a **game**:
 ```bash
 # 1. Install Dart SDK from https://dart.dev/get-dart
 
-# 2. Activate required tools
-dart pub global activate webdev
+# 2. Activate Bullseye2D CLI
 dart pub global activate bullseye2d
 ```
 
@@ -91,7 +90,7 @@ bullseye2d create boing_game
 cd boing_game
 
 # Start the development server
-webdev serve --auto refresh
+bullseye2d run web
 ```
 
 **Result:** Open http://localhost:8080 to see your basic app.
@@ -100,15 +99,18 @@ webdev serve --auto refresh
 
 ## Let's get started
 
-Replace all content in `web/main.dart` with:
+Replace all content in `lib/boing_app.dart` with:
 
 ```dart
 import 'package:bullseye2d/bullseye2d.dart';
 
 class BoingApp extends App {
-  BoingApp() {
-    canvas.width = 800;
-    canvas.height = 480;
+  BoingApp({AppConfig? config})
+      : super(config ?? AppConfig(autoSuspend: false));
+
+  @override
+  void onCreate() {
+    setRenderSize(800, 480);
   }
 
   @override
@@ -116,9 +118,16 @@ class BoingApp extends App {
     gfx.clear(1.0, 0.0, 0.0);
   }
 }
+```
+
+And `web/main.dart`:
+
+```dart
+import 'package:boing/boing_app.dart';
+import 'package:bullseye2d/bullseye2d.dart';
 
 void main() {
-  BoingApp();
+  BoingApp(config: AppConfig(canvasElement: "#gameCanvas"));
 }
 ```
 
@@ -127,7 +136,7 @@ void main() {
 ## 🎉 Hooray!
 
 ```bash
-webdev serve --auto refresh
+bullseye2d run web
 ```
 
 **Expected Result:**
@@ -136,13 +145,16 @@ webdev serve --auto refresh
 
 **What We Did:**
 - Created `BoingApp` class extending Bullseye2D's `App`
-- Set canvas size to our game dimensions
+- Accept optional `AppConfig` for platform-specific settings
+- Set render size to our game dimensions with `setRenderSize()`
 - Used `gfx.clear(1, 0, 0)` to fill screen with red
-- `main()` function creates and starts the app
+- Thin `web/main.dart` passes `canvasElement` config
 
 ---
 
 # Step 2: Add Game Configuration
+
+In `lib/boing_app.dart`:
 
 ```dart
 import 'package:bullseye2d/bullseye2d.dart';
@@ -172,14 +184,13 @@ We render different things depending on the game state.
 class BoingApp extends App {
   GameState state = GameState.menu;
   
-  BoingApp() {
-    canvas.width = GameConfig.width.toInt();
-    canvas.height = GameConfig.height.toInt();
-  }
+  BoingApp({AppConfig? config})
+      : super(config ?? AppConfig(autoSuspend: false));
 
   @override
   void onCreate() {
     app = this; // Set global reference, for easier access later on
+    setRenderSize(GameConfig.width.toInt(), GameConfig.height.toInt());
   }
 
 ```
@@ -203,7 +214,7 @@ class BoingApp extends App {
 ## 🎉 Red pill or blue pill?
 
 ```bash
-webdev serve --auto refresh
+bullseye2d run web
 ```
 
 **Expected Result:**
@@ -227,14 +238,16 @@ Before continuing, download the game assets:
 ```bash
 curl -O https://bullseye2d.org/downloads/boing-assets.zip
 unzip -o boing-assets.zip
-cp -r boing-assets/* ./web/
+cp -r boing-assets/* ./assets/
+ln -s ../assets web/assets
 rm -r boing-assets boing-assets.zip
 ```
 
 **Your project should now have:**
-- `web/images/` - 30+ image files
-- `web/sounds/` - 15+ sound files
-- `web/music/` - Background music
+- `assets/images/` - 30+ image files
+- `assets/sounds/` - 15+ sound files
+- `assets/music/` - Background music
+- `web/assets` - Symlink to `../assets`
 
 ---
 
@@ -258,9 +271,9 @@ class BoingApp extends App {
 
   void loadAssets() {
     // Load menu images
-    assets["menu0"] = resources.loadImage("images/menu0.png", pivotX: 0.0, pivotY: 0.0);
-    assets["menu1"] = resources.loadImage("images/menu1.png", pivotX: 0.0, pivotY: 0.0);
-    assets["table"] = resources.loadImage("images/table.png", pivotX: 0.0, pivotY: 0.0);
+    assets["menu0"] = resources.loadImage("assets/images/menu0.png", pivotX: 0.0, pivotY: 0.0);
+    assets["menu1"] = resources.loadImage("assets/images/menu1.png", pivotX: 0.0, pivotY: 0.0);
+    assets["table"] = resources.loadImage("assets/images/table.png", pivotX: 0.0, pivotY: 0.0);
   }
 }
 ```
@@ -308,7 +321,7 @@ void onRender() {
 ## 🎉 Test the menu!
 
 ```bash
-webdev serve --auto refresh
+bullseye2d run web
 ```
 
 **Expected Result:**
@@ -443,13 +456,13 @@ Update `loadAssets()` method to load the bat images:
 
 ```dart
 void loadAssets() {
-  assets["menu0"] = resources.loadImage("images/menu0.png");
-  assets["menu1"] = resources.loadImage("images/menu1.png");
-  assets["table"] = resources.loadImage("images/table.png");
+  assets["menu0"] = resources.loadImage("assets/images/menu0.png");
+  assets["menu1"] = resources.loadImage("assets/images/menu1.png");
+  assets["table"] = resources.loadImage("assets/images/table.png");
   
   // Load paddle images with center pivot
-  assets["bat00"] = resources.loadImage("images/bat00.png", pivotX: 0.5, pivotY: 0.5);
-  assets["bat10"] = resources.loadImage("images/bat10.png", pivotX: 0.5, pivotY: 0.5);
+  assets["bat00"] = resources.loadImage("assets/images/bat00.png", pivotX: 0.5, pivotY: 0.5);
+  assets["bat10"] = resources.loadImage("assets/images/bat10.png", pivotX: 0.5, pivotY: 0.5);
 }
 ```
 
@@ -578,14 +591,14 @@ Let's load the ball sprite:
 
 ```dart
 void loadAssets() {
-  assets["menu0"] = resources.loadImage("images/menu0.png");
-  assets["menu1"] = resources.loadImage("images/menu1.png");
-  assets["table"] = resources.loadImage("images/table.png");
-  assets["bat00"] = resources.loadImage("images/bat00.png", pivotX: 0.5, pivotY: 0.5);
-  assets["bat10"] = resources.loadImage("images/bat10.png", pivotX: 0.5, pivotY: 0.5);
+  assets["menu0"] = resources.loadImage("assets/images/menu0.png");
+  assets["menu1"] = resources.loadImage("assets/images/menu1.png");
+  assets["table"] = resources.loadImage("assets/images/table.png");
+  assets["bat00"] = resources.loadImage("assets/images/bat00.png", pivotX: 0.5, pivotY: 0.5);
+  assets["bat10"] = resources.loadImage("assets/images/bat10.png", pivotX: 0.5, pivotY: 0.5);
   
   // Load ball with center pivot
-  assets["ball"] = resources.loadImage("images/ball.png", pivotX: 0.5, pivotY: 0.5);
+  assets["ball"] = resources.loadImage("assets/images/ball.png", pivotX: 0.5, pivotY: 0.5);
 }
 ```
 
@@ -636,7 +649,7 @@ We need to draw the ball:
 ## 🎉 Almost a game!
 
 ```bash
-webdev serve --auto refresh
+bullseye2d run web
 ```
 
 **Expected Result:**
@@ -702,7 +715,7 @@ void update() {
 ## 🎉 Paddle Collisions working!
 
 ```bash
-webdev serve --auto refresh
+bullseye2d run web
 ```
 
 **Expected Result:**
@@ -793,16 +806,16 @@ Update `loadAssets()` method:
 
 ```dart
 void loadAssets() {
-  assets["menu0"] = resources.loadImage("images/menu0.png", pivotX: 0.0, pivotY: 0.0);
-  assets["menu1"] = resources.loadImage("images/menu1.png", pivotX: 0.0, pivotY: 0.0);
-  assets["table"] = resources.loadImage("images/table.png", pivotX: 0.0, pivotY: 0.0);
-  assets["bat00"] = resources.loadImage("images/bat00.png");
-  assets["bat10"] = resources.loadImage("images/bat10.png");
-  assets["ball"] = resources.loadImage("images/ball.png");
+  assets["menu0"] = resources.loadImage("assets/images/menu0.png", pivotX: 0.0, pivotY: 0.0);
+  assets["menu1"] = resources.loadImage("assets/images/menu1.png", pivotX: 0.0, pivotY: 0.0);
+  assets["table"] = resources.loadImage("assets/images/table.png", pivotX: 0.0, pivotY: 0.0);
+  assets["bat00"] = resources.loadImage("assets/images/bat00.png");
+  assets["bat10"] = resources.loadImage("assets/images/bat10.png");
+  assets["ball"] = resources.loadImage("assets/images/ball.png");
   
   // Load digit sprites for score display
   for (int i = 0; i <= 9; i++) {
-    assets["digit0$i"] = resources.loadImage("images/digit0$i.png");
+    assets["digit0$i"] = resources.loadImage("assets/images/digit0$i.png");
   }
 }
 ```
@@ -881,7 +894,7 @@ void onUpdate() {
 Load game over asset in `loadAssets()`, and update `onRender()`:
 
 ```dart
-assets["over"] = resources.loadImage("images/over.png", pivotX: 0.0, pivotY: 0.0);
+assets["over"] = resources.loadImage("assets/images/over.png", pivotX: 0.0, pivotY: 0.0);
 
 ...
 
@@ -907,7 +920,7 @@ void onRender() {
 ## 🎉 We call it a game now!
 
 ```bash
-webdev serve --auto refresh
+bullseye2d run web
 ```
 
 **Expected Result:**
@@ -1022,7 +1035,7 @@ double ai() {
 ## 🎉 Did we just create SkyNet?
 
 ```bash
-webdev serve --auto refresh
+bullseye2d run web
 ```
 
 **Expected Result:**
@@ -1076,11 +1089,11 @@ void loadAssets() {
   
   // Load impact animation frames
   for (int i = 0; i <= 4; i++) {
-    assets["impact$i"] = resources.loadImage("images/impact$i.png");
+    assets["impact$i"] = resources.loadImage("assets/images/impact$i.png");
   }
 
   // Load blank image for initial state
-  assets["blank"] = resources.loadImage("images/blank.png", pivotX: 0.0, pivotY: 0.0);
+  assets["blank"] = resources.loadImage("assets/images/blank.png", pivotX: 0.0, pivotY: 0.0);
 }
 ```
 
@@ -1206,10 +1219,10 @@ We also need to load the additional bat frames, so we need to update the `loadAs
 
 ```dart
 // Load all bat animation frames
-assets["bat00"] = resources.loadImage("images/bat00.png");
-assets["bat01"] = resources.loadImage("images/bat01.png");
-assets["bat10"] = resources.loadImage("images/bat10.png");
-assets["bat11"] = resources.loadImage("images/bat11.png");
+assets["bat00"] = resources.loadImage("assets/images/bat00.png");
+assets["bat01"] = resources.loadImage("assets/images/bat01.png");
+assets["bat10"] = resources.loadImage("assets/images/bat10.png");
+assets["bat11"] = resources.loadImage("assets/images/bat11.png");
 ```
 
 In `Ball.update()` paddle collision, we need to start the bat animation:
@@ -1227,7 +1240,7 @@ bat.timer = 10; // Trigger paddle hit animation
 ## 🎉 Testing time!
 
 ```bash
-webdev serve --auto refresh
+bullseye2d run web
 ```
 
 **Expected Result:**
@@ -1284,7 +1297,7 @@ void loadAssets() {
 ```dart
   soundMap.forEach((name, count) {
     for (int i = 0; i < count; i++) {
-      sounds["$name$i"] = resources.loadSound("sounds/$name$i.ogg");
+      sounds["$name$i"] = resources.loadSound("assets/sounds/$name$i.ogg");
     }
   });
 }
@@ -1303,7 +1316,7 @@ Add to `BoingApp` class:
     loadAssets();
     
     // Start background music
-    audio.playMusic("music/theme.ogg", true); // Loop = true
+    audio.playMusic("assets/music/theme.ogg", true); // Loop = true
     audio.musicVolume = 0.3; // 30% volume
   }
 }
@@ -1414,7 +1427,7 @@ void onCreate() {
   // Create demo game for menu (both AI)
   game = Game([null, null]);
   
-  audio.playMusic("music/theme.ogg", true);
+  audio.playMusic("assets/music/theme.ogg", true);
   audio.musicVolume = 0.3;
 }
 ```
@@ -1424,7 +1437,7 @@ void onCreate() {
 ## 🎉 Test Complete Game with Sound!
 
 ```bash
-webdev serve --auto refresh
+bullseye2d run web
 ```
 
 **Expected Result:**
@@ -1455,13 +1468,18 @@ webdev serve --auto refresh
 ## Deployment Options
 
 ```bash
-webdev build
+bullseye2d build web
 ```
 
 **Any Web Server:**
-- Copy `build/` folder contents to web hosting
+- Copy `build/web/` folder contents to web hosting
 - Game runs in any modern browser
 - No server-side code needed
+
+**Desktop (SDL3):**
+```bash
+bullseye2d build sdl3
+```
 
 ---
 

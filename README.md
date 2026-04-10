@@ -9,7 +9,7 @@ A Dart web port of the classic Pong game "Boing" from the **Code the Classics** 
 This is a port of the Boing game originally developed for the **Code the Classics** book. The original Python/Pygame version has been ported to Dart and adapted to run in web browsers using the Bullseye2D library.
 
 **Original Game:** [Boing from Code the Classics](https://github.com/Wireframe-Magazine/Code-the-Classics/tree/master/boing-master)  
-**Book:** [Code the Classics Volume 1](https://magazine.raspberrypi.com/books/code-the-classics1)  
+**Book:** [Code the Classics Volume 1](https://magazine.raspberrypi.com/books/code-the-classics-vol-I-2ed)  
 **Original Author:** Eben Upton
 **Original License:** BSD-2-Clause  
 
@@ -72,6 +72,6 @@ This port maintains the same BSD-2-Clause license as the original.
 ## Links
 
 - [Original Boing Source](https://github.com/Wireframe-Magazine/Code-the-Classics/tree/master/boing-master)
-- [Code the Classics Book](https://magazine.raspberrypi.com/books/code-the-classics1)
+- [Code the Classics Book](https://magazine.raspberrypi.com/books/code-the-classics-vol-I-2ed)
 - [Bullseye2D Engine](https://bullseye2d.org)
 - [Dart Language](https://dart.dev)

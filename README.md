@@ -1,5 +1,7 @@
 # Boing - Bullseye2D Port
 
+[**Play**](https://jochenheizmann.github.io/bullseye2d-boing/)
+
 A Dart web port of the classic Pong game "Boing" from the **Code the Classics** collection, built using the Bullseye2D game library.
 
 ## About
@@ -25,7 +27,7 @@ This is a port of the Boing game originally developed for the **Code the Classic
 
 ### Prerequisites
 - [Dart SDK](https://dart.dev/get-dart) (^3.7.3)
-- Web browser with WebGL support
+- [Bullseye2D CLI](https://bullseye2d.org)
 
 ### Installation
 
@@ -37,14 +39,12 @@ cd bullseye2d-boing
 # Install dependencies
 dart pub get
 
-# Activate webdev (if not already installed)
-dart pub global activate webdev
+# Run on web
+bullseye2d run web
 
-# Running the Game on development server
-webdev serve
+# Run on desktop (SDL3)
+bullseye2d run sdl3
 ```
-
-Then open your browser to `http://localhost:8080`
 
 ## Tutorial
 
@@ -73,5 +73,5 @@ This port maintains the same BSD-2-Clause license as the original.
 
 - [Original Boing Source](https://github.com/Wireframe-Magazine/Code-the-Classics/tree/master/boing-master)
 - [Code the Classics Book](https://magazine.raspberrypi.com/books/code-the-classics1)
-- [Bullseye2D Engine](https://pub.dev/packages/bullseye2d)
+- [Bullseye2D Engine](https://bullseye2d.org)
 - [Dart Language](https://dart.dev)
